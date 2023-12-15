@@ -1,0 +1,13 @@
+name: spikingdijkstra
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - networkx
+  - jupyterlab
+  - numpy
+  - matplotlib
+  - pip
+  - pip:
+    - simsnn==1.0.2
+    
