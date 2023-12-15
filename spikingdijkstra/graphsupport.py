@@ -35,10 +35,13 @@ def is_equal(g, pathdict1, pathdict2):
     pathdict2: python dict e.g. {0: [0], 1: [0, 1], 2: [0, 2], 3: [0, 3]}
     return: Boolean truth value
     """
+
     # First check if both dicts contain the same elements to prevent retrieval errors
     for n in pathdict1 | pathdict2:
         if (n not in pathdict1) or (n not in pathdict2):
             return False
+
+    # Then check if we can establish that for each path both solutions visit the same nodes or cover the same distance.
     for n in pathdict1:
         if pathdict1[n] == pathdict2[n]:
             continue

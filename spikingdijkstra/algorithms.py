@@ -1,4 +1,3 @@
-from pprint import pprint
 import numpy as np
 import networkx as nx
 
@@ -166,7 +165,7 @@ def sssp(g, source):
     }
 
     E = {f"{p}_e_{n}": net.createLIF(ID=f"{p}_e_{n}", thr=2, m=0) for p, n in g.edges}
-    pprint(E)
+
     __D_E__ = {}
     for e in E:
         p = e.split("_")[0]
@@ -175,25 +174,12 @@ def sssp(g, source):
             ID=f"({p}_d_{n}, {e})", pre=D[f"{p}_d_{n}"], post=E[e]
         )
         __D_E__[(f"{p}_d_{n}", e)] = synapse
-    # __D_E__ = {
-    #     (f"{p}_d_{n}", f"{p}_e_{n}"): net.createSynapse(
-    #         ID=f"({p}_d_{n}, {p}_e_{n})", pre=D[f"{p}_d_{n}"], post=E[f"{p}_e_{n}"]
-    #     )
-    #     for (p, _, _, _, n) in E
-    # }
+
     __N_E__ = {}
     for e in E:
-        # p = e.split("_")[0]
         n = e.split("_")[-1]
         synapse = net.createSynapse(ID=f"({n}, {e})", pre=N[int(n)], post=E[e])
         __N_E__[(int(n), e)] = synapse
-
-    # __N_E__ = {
-    #     (int(n), f"{p}_e_{n}"): net.createSynapse(
-    #         ID=f"(n, {p}_e_{n})", pre=N[int(n)], post=E[f"{p}_e_{n}"]
-    #     )
-    #     for (p, _, _, _, n) in E
-    # }
 
     N[
         source
@@ -211,6 +197,5 @@ def sssp(g, source):
         p = s.split("_")[0]
         n = s.split("_")[-1]
         L[int(n)] = int(p)
-    # L = {int(n): int(p) for p, _, _, _, n in spiked}
     path = lambda h, t, d: t if t[0] == h else path(h, [d.get(t[0], h)] + t, d)
     return {n: path(source, [n], L) for n in L} | {source: [source]}
