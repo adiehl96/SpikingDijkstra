@@ -139,7 +139,7 @@ def ssspl(g, source):
     return snnpathlengths
 
 
-def sssp(g, source):
+def sssp(g, source, steps=50):
     """
     Single-Source Shortest Path to All Nodes (SSSP)
     """
@@ -181,13 +181,12 @@ def sssp(g, source):
         synapse = net.createSynapse(ID=f"({n}, {e})", pre=N[int(n)], post=E[e])
         __N_E__[(int(n), e)] = synapse
 
-    N[
-        source
-    ].V = 1000  # Let the source neuron spike immediately, to start the path length calculation
+    # Let the source neuron spike immediately, to start the path length calculation
+    N[source].V = 1000
 
     order = np.array([e for e in E])
     sim.raster.addTarget([E[e] for e in order])
-    sim.run(steps=50, plotting=False)
+    sim.run(steps=steps, plotting=False)
 
     rasterdata = sim.raster.get_measurements().T
     spiked = order[(rasterdata > 0).any(axis=1)]
